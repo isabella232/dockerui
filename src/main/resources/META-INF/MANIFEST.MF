@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-Description: hawtio :: Docker UI
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-ManifestVersion: 2
+Bundle-Name: hawtio :: Docker UI
+Bundle-SymbolicName: io.hawt.dockerui.hawtio-dockerui
+Bundle-Version: ${project.version}
+Implementation-Title: hawtio :: Docker UI
+Implementation-Version: ${project.version}
+Web-ContextPath: /hawtio-dockerui
+Webapp-Context: /hawtio-dockerui
