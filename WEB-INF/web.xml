@@ -9,6 +9,16 @@
 
   <display-name>Hawtio Docker UI</display-name>
 
+  <servlet>
+    <servlet-name>docker-proxy</servlet-name>
+    <servlet-class>io.hawt.dockerui.ProxyServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>docker-proxy</servlet-name>
+    <url-pattern>/dockerapi/*</url-pattern>
+  </servlet-mapping>
+
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
