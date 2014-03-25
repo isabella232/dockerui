@@ -109,9 +109,11 @@ public class ProxyServlet extends HttpServlet {
         if (useSocket) {
             servletContext.log("Using docker socket : " + socketPath);
 
+/*
             UnixSocketFactory socketFactory = new UnixSocketFactory(socketPath);
             Protocol http = new Protocol("http", socketFactory, 80);
             Protocol.registerProtocol("http", http);
+*/
 
 
         } else {
