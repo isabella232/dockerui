@@ -24,8 +24,7 @@ var Docker = (function(Docker) {
       .run(function(workspace, viewRegistry) {
         Docker.log.info("plugin running");
 
-        // hmm, docker's CSS clashes...
-        // Core.addCSS('../hawtio-dockerui/css/app.css');
+        Core.addCSS('../hawtio-dockerui/css/plugin.css');
 
         // tell hawtio that we have our own custom layout for
         // our view
