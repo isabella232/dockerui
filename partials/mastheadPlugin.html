@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs connected">
-  <li><a href="#/docker">Dashboard</a></li>
-  <li><a href="#/docker/containers/">Containers</a></li>
-  <li><a href="#/docker/images/">Images</a></li>
-  <li><a href="#/docker/settings/">Settings</a></li>
+  <li ng-class='{active : isActive("#/docker")}'><a href="#/docker">Dashboard</a></li>
+  <li ng-class='{active : isActive("#/containers/")}'><a href="#/containers/">Containers</a></li>
+  <li ng-class='{active : isActive("#/images/")}'><a href="#/images/">Images</a></li>
+  <li ng-class='{active : isActive("#/d_settings")}'><a href="#/d_settings">Settings</a></li>
 </ul>

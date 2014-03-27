@@ -9,11 +9,11 @@ var Docker = (function(Docker) {
   angular.module(Docker.pluginName, ['hawtioCore', 'dockerui.services', 'dockerui.filters'])
       .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/docker', {templateUrl: Docker.templatePath + 'dashboard.html', controller: 'DashboardController'});
-        $routeProvider.when('/docker/containers/', {templateUrl: Docker.templatePath + 'containers.html', controller: 'ContainersController'});
-        $routeProvider.when('/docker/containers/:id/', {templateUrl: Docker.templatePath + 'container.html', controller: 'ContainerController'});
-        $routeProvider.when('/docker/images/', {templateUrl: Docker.templatePath + 'images.html', controller: 'ImagesController'});
-        $routeProvider.when('/docker/images/:id/', {templateUrl: Docker.templatePath + 'image.html', controller: 'ImageController'});
-        $routeProvider.when('/docker/settings', {templateUrl: Docker.templatePath + 'settings.html', controller: 'SettingsController'});
+        $routeProvider.when('/containers/', {templateUrl: Docker.templatePath + 'containers.html', controller: 'ContainersController'});
+        $routeProvider.when('/containers/:id/', {templateUrl: Docker.templatePath + 'container.html', controller: 'ContainerController'});
+        $routeProvider.when('/images/', {templateUrl: Docker.templatePath + 'images.html', controller: 'ImagesController'});
+        $routeProvider.when('/images/:id/', {templateUrl: Docker.templatePath + 'image.html', controller: 'ImageController'});
+        $routeProvider.when('/d_settings', {templateUrl: Docker.templatePath + 'settings.html', controller: 'SettingsController'});
       }])
     // This is your docker url that the api will use to make requests
     // You need to set this to the api endpoint without the port i.e. http://192.168.1.9
@@ -29,6 +29,9 @@ var Docker = (function(Docker) {
         // tell hawtio that we have our own custom layout for
         // our view
         viewRegistry["docker"] = Docker.templatePath + "dockerLayout.html";
+        viewRegistry["containers"] = Docker.templatePath + "dockerLayout.html";
+        viewRegistry["images"] = Docker.templatePath + "dockerLayout.html";
+        viewRegistry["d_settings"] = Docker.templatePath + "dockerLayout.html";
 
         // Add a top level tab to hawtio's navigation bar
         workspace.topLevelTabs.push({
@@ -37,14 +40,22 @@ var Docker = (function(Docker) {
           title: "Docker UI",
           isValid: function(workspace) { return true },
           href: function() { return "#/docker"; },
-          isActive: function() { return workspace.isLinkActive("docker"); }
+          isActive: function() {
+            return workspace.isLinkActive("docker")
+                || workspace.isLinkActive("containers")
+                || workspace.isLinkActive("images")
+                || workspace.isLinkActive("d_settings");
+          }
         });
 
       });
 
 
-  Docker.MastheadController = function ($scope) {
+  Docker.MastheadController = function ($scope, workspace) {
     $scope.template = Docker.templatePath + 'mastheadPlugin.html';
+    $scope.isActive = function (href) {
+      return workspace.isLinkActive(href);
+    };
   };
 
   Docker.StatusBarController = function ($scope, Settings) {
