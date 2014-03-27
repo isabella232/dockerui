@@ -9,6 +9,30 @@
 
   <display-name>Hawtio Docker UI</display-name>
 
+  <context-param>
+    <description>Plugin's path on the server</description>
+    <param-name>plugin-context</param-name>
+    <param-value>${plugin-context}</param-value>
+  </context-param>
+
+  <context-param>
+    <description>Plugin's path on the server</description>
+    <param-name>plugin-name</param-name>
+    <param-value>${project.artifactId}</param-value>
+  </context-param>
+
+  <context-param>
+    <description>Plugin's path on the server</description>
+    <param-name>plugin-domain</param-name>
+    <param-value>${plugin-domain}</param-value>
+  </context-param>
+
+  <context-param>
+    <description>Plugin's path on the server</description>
+    <param-name>plugin-scripts</param-name>
+    <param-value>${plugin-scripts}</param-value>
+  </context-param>
+
   <servlet>
     <servlet-name>docker-proxy</servlet-name>
     <servlet-class>io.hawt.dockerui.ProxyServlet</servlet-class>
@@ -22,5 +46,10 @@
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
+
+  <listener>
+    <listener-class>io.hawt.dockerui.PluginContextListener</listener-class>
+  </listener>
+
 </web-app>
 

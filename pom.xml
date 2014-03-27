@@ -28,13 +28,21 @@
   <artifactId>hawtio-dockerui</artifactId>
   <version>1.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
+  <description>hawtio :: dockerui plugin</description>
 
   <properties>
     <commons-httpclient-version>3.1</commons-httpclient-version>
     <commons-io-version>2.2</commons-io-version>
     <hawtio-version>1.2.3</hawtio-version>
+    <maven-antrun-plugin-version>1.7</maven-antrun-plugin-version>
     <maven-bundle-plugin-version>2.3.7</maven-bundle-plugin-version>
+    <maven-resources-plugin-version>2.6</maven-resources-plugin-version>
     <servlet-api-version>2.5</servlet-api-version>
+
+    <plugin-context>/hawtio-dockerui</plugin-context>
+    <plugin-name>${project.artifactId}</plugin-name>
+    <plugin-domain />
+
   </properties>
 
   <licenses>
@@ -87,14 +95,76 @@
       <artifactId>hawtio-util</artifactId>
       <version>${hawtio-version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>io.hawt</groupId>
+      <artifactId>hawtio-plugin-mbean</artifactId>
+      <version>${hawtio-version}</version>
+    </dependency>
+
   </dependencies>
 
 
   <build>
     <resources>
+      <resource>
+        <directory>.</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>WEB-INF/web.xml</include>
+        </includes>
+      </resource>
     </resources>
 
     <plugins>
+
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>${maven-antrun-plugin-version}</version>
+        <executions>
+
+          <execution>
+            <id>generate-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo>Building plugin javascript file list</echo>
+                <fileset id="javascript-files" dir="${basedir}">
+                  <include name="**/*.js"/>
+                  <exclude name="app.js"/>
+                  <exclude name="assets/**"/>
+                </fileset>
+                <pathconvert pathsep=","
+                             property="plugin-scripts"
+                             refid="javascript-files">
+                  <map from="${basedir}" to=""/>
+                </pathconvert>
+                <echo>Files: ${plugin-scripts}</echo>
+
+              </target>
+              <exportAntProperties>true</exportAntProperties>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin-version}</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
@@ -115,8 +185,8 @@
             <supportedProjectType>war</supportedProjectType>
           </supportedProjectTypes>
           <instructions>
-            <Webapp-Context>hawtio-dockerui</Webapp-Context>
-            <Web-ContextPath>hawtio-dockerui</Web-ContextPath>
+            <Webapp-Context>${plugin-context}</Webapp-Context>
+            <Web-ContextPath>${plugin-context}</Web-ContextPath>
 
             <Embed-Directory>WEB-INF/lib</Embed-Directory>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
@@ -164,7 +234,7 @@
           </archive>
           <warSourceDirectory>${basedir}</warSourceDirectory>
           <warSourceIncludes>index.html,assets/**,css/**,images/**,js/**,lib/*,partials/**</warSourceIncludes>
-          <webXml>${basedir}/WEB-INF/web.xml</webXml>
+          <webXml>${basedir}/target/classes/WEB-INF/web.xml</webXml>
         </configuration>
       </plugin>
 
@@ -175,7 +245,7 @@
         <configuration>
           <scanIntervalSeconds>1</scanIntervalSeconds>
           <webAppConfig>
-            <contextPath>/hawtio-dockerui</contextPath>
+            <contextPath>${plugin-context}</contextPath>
           </webAppConfig>
           <connectors>
             <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
