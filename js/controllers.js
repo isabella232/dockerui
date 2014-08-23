@@ -220,7 +220,7 @@ function ContainersController($scope, Container, Settings, Messages, ViewSpinner
     var update = function(data) {
         ViewSpinner.spin();
         Container.query(data, function(d) {
-            $scope.containers = d.map(function(item) { 
+            $scope.containers = d.map(function(item) {
             	return new ContainerViewModel(item); });
             ViewSpinner.stop();
         });
@@ -393,7 +393,7 @@ function ImageController($scope, $q, $routeParams, $location, Image, Container, 
 }
 
 function StartContainerController($scope, $routeParams, $location, Container, Messages) {
-    $scope.template = 'partials/startcontainer.html';
+    $scope.template = Docker.templatePath + 'startcontainer.html';
     $scope.config = {
         memory: 0,
         memorySwap: 0,
