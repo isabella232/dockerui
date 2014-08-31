@@ -26,7 +26,7 @@
 
   <groupId>io.hawt.dockerui</groupId>
   <artifactId>hawtio-dockerui</artifactId>
-  <version>1.0.4-SNAPSHOT</version>
+  <version>1.0.4</version>
   <packaging>war</packaging>
   <description>hawtio :: dockerui plugin</description>
 
